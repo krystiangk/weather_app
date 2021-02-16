@@ -4,6 +4,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 from datetime import datetime, timedelta
 import flag
 import requests
+import webbrowser
 
 open_weather_app_id = app.config['OPEN_WEATHER_APP_ID']
 
@@ -41,9 +42,9 @@ def index_get():
             'sunset': r['sys']['sunset'],
             'offset': r['timezone'],
             'tz_sunrise':  (datetime.utcfromtimestamp(int(r['sys']['sunrise']))+timedelta(seconds=r['timezone']))
-                .strftime('%H:%M:%S'),
+                .strftime('%Y-%m-%d %H:%M:%S'),
             'tz_sunset': (datetime.utcfromtimestamp(int(r['sys']['sunset'])) + timedelta(seconds=r['timezone']))
-                .strftime('%H:%M:%S'),
+                .strftime('%Y-%m-%d %H:%M:%S'),
             'wind_speed': r['wind']['speed']
         }
 
@@ -83,3 +84,4 @@ def delete_city(name):
 @app.route('/about')
 def about():
     return render_template('about.html')
+
