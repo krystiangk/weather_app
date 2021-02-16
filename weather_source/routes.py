@@ -1,32 +1,16 @@
-import requests
+from weather_source.models import City
+from weather_source import app, db
 from flask import Flask, render_template, request, redirect, url_for, flash
-from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
 import flag
-import os
-from dotenv import load_dotenv
+import requests
 
-load_dotenv()
-
-app = Flask(__name__)
-app.config['DEBUG'] = True
-app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
-open_weather_app_id = os.getenv('OPEN_WEATHER_APP_ID')
-
+open_weather_app_id = app.config['OPEN_WEATHER_APP_ID']
 
 def get_weather_data(city):
     url = f'http://api.openweathermap.org/data/2.5/weather?q={city}&units=metric&appid={open_weather_app_id}'
     r = requests.get(url).json()
     return r
-
-
-class City(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), nullable=False)
-    datetime = db.Column(db.DateTime)
 
 
 @app.route('/')
@@ -99,7 +83,3 @@ def delete_city(name):
 @app.route('/about')
 def about():
     return render_template('about.html')
-
-
-if __name__ == '__main__':
-    app.run()
