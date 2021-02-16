@@ -1,0 +1,6 @@
+venv
+.flaskenv
+weather.db
+.idea/
+__pycache__/
+.env

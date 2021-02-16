@@ -1,0 +1,69 @@
+{% extends "layout.html" %}
+{% block content %}
+<section class="section search-section">
+<form method="POST">
+    <div class="form-group">
+        <h3 class="text-justify">Type the name of city you'd like to check the weather for:</h3>
+        <input class="form-control mb-2" name="city" type="text" placeholder="City Name">
+        <button type="submit" class="btn btn-primary is-info">Add City</button>
+    </div>
+</form>
+
+</section>
+{% for weather in weather_data %}
+<section class="section content-section">
+
+    <div class="row">
+        <div class="col-md-1">
+            <img src="http://openweathermap.org/img/w/{{ weather.icon }}.png" alt="Image">
+
+        </div>
+        <div class="col text-section">
+            <h3 class="mb-3">
+            {{ weather.city }}  {{ weather.flag}}
+            </h3>
+            <div class="row">
+                <div class="col">
+                    <p>
+                        Temperature: {{ weather.temperature }} °C
+                    </p>
+                    <p>
+                        Pressure: {{ weather.pressure }} hPa
+                    </p>
+                    <p>
+                        Humidity: {{ weather.humidity }} %
+                    </p>
+                    <p>
+                        Wind speed: {{ weather.wind_speed }} m/s
+                    </p>
+
+                </div>
+                <div class="col">
+                    <p>
+                        Description: {{ weather.description }}
+                    </p>
+                    <p>
+                        Sunrise (local time): {{ weather.tz_sunrise }}
+                    </p>
+                    <p>
+                        Sunset (local time): {{ weather.tz_sunset }}
+                    </p>
+                    <a href="https://www.google.com/maps/search/?api=1&query={{weather.lat}},{{weather.lon}}">
+                        Check this city on the map.
+                    </a>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-1 close-section">
+            <a href="{{ url_for('delete_city', name=weather.city) }}">
+                <button type="button" class="btn-close" aria-label="Close"></button>
+            </a>
+        </div>
+
+    </div>
+
+</section>
+
+{% endfor %}
+{% endblock %}
