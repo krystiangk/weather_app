@@ -1,16 +1,17 @@
 from weather_source.models import City
 from weather_source import app, db
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, abort
 from datetime import datetime, timedelta
 import flag
 import requests
-import webbrowser
 
 open_weather_app_id = app.config['OPEN_WEATHER_APP_ID']
+
 
 def get_weather_data(city):
     url = f'http://api.openweathermap.org/data/2.5/weather?q={city}&units=metric&appid={open_weather_app_id}'
     r = requests.get(url).json()
+    print(r)
     return r
 
 
@@ -55,8 +56,12 @@ def index_get():
 
 @app.route('/', methods=['POST'])
 def index_post():
-    err_msg = ''
     new_city = request.form.get('city').title()
+    weather_city = get_weather_data(new_city)
+
+    if weather_city['cod'] == '404':
+        flash('Sorry, this city doesn\'t exist. Please choose another one.', 'info')
+        return redirect(url_for('index_get'))
 
     if new_city:
         existing_city = City.query.filter_by(name=new_city).first()
@@ -67,7 +72,6 @@ def index_post():
             db.session.add(new_city_obj)
             db.session.commit()
         else:
-            err_msg = 'City already exists!'
             flash('This city already exists in the database. Please choose another one.', 'info')
         return redirect(url_for('index_get'))
 
