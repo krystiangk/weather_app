@@ -10,24 +10,17 @@ open_weather_app_id = app.config['OPEN_WEATHER_APP_ID']
 
 def get_weather_data(city):
     url = f'http://api.openweathermap.org/data/2.5/weather?q={city}&units=metric&appid={open_weather_app_id}'
-    r = requests.get(url).json()
-    print(r)
-    return r
+    return requests.get(url).json()
 
 
 @app.route('/')
 def index_get():
     cities = City.query.order_by(City.datetime.desc()).all()
-
-    url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=metric&appid={}'
-
     weather_data = []
 
     for city in cities:
+        r = get_weather_data(city.name)
 
-        r = requests.get(url.format(city.name, open_weather_app_id)).json()
-        print(r)
-        print(open_weather_app_id)
         weather = {
             'city': city.name,
             'country': r['sys']['country'],
