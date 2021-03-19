@@ -1,5 +1,5 @@
-from weather_source.models import City
-from weather_source import app, db
+from .models import City
+from . import app, db
 from flask import Flask, render_template, request, redirect, url_for, flash, abort
 from datetime import datetime, timedelta
 import flag

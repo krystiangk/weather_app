@@ -2,6 +2,15 @@ body {
   background: #fafafa;
   color: #333333;
   margin-top: 4rem;
+  background-image: url("weather.jpg");
+  background-size: cover;
+}
+
+.main-header {
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #d5e0e8;
+  text-align: center;
 }
 
 .text-section {
@@ -36,7 +45,7 @@ h1, h2, h3, h4, h5, h6 {
   background: #ffffff;
   padding: 10px 20px;
   border: 1px solid #dddddd;
-  border-radius: 3px;
+  border-radius: 8px;
   margin-bottom: 20px;
 }
 
